@@ -1,0 +1,5 @@
+ipykernel
+nbclient
+nbformat
+PyYAML
+requests

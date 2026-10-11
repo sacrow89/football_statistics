@@ -1,0 +1,30 @@
+PREMIER LEAGUE FIXTURE INGESTION - QUICK REFERENCE
+
+Run these commands in PowerShell from the root of the football_statistics
+repository. The first command installs the Python packages required by the
+notebook runner. You generally only need to run it the first time, or after
+requirements.txt changes.
+
+    python -m pip install -r requirements.txt
+
+Run the fixture notebook using its YAML job configuration:
+
+    python scripts\run_notebook.py --config config\jobs\fixtures\premier_league_2026.yml
+
+The YAML configuration tells the runner which notebook and Jupyter kernel to
+use, and sets the timeout for each notebook cell. The runner executes the
+notebook locally and reports an error if execution fails.
+
+Before running, make sure API_FOOTBALL_KEY is set in the environment inherited
+by PowerShell. The notebook reads the key from that environment variable; do
+not paste the key into the notebook, YAML file, or this reference file.
+
+The notebook calls API-Football directly, so it must run on a computer or
+runner that can reach that API. It is not intended to run as a Databricks job.
+It saves each successful raw API response in a timestamped folder under:
+
+    data\bronze\fixtures\league_id=39\season=2026
+
+The YAML setup runs the job on demand only. Add the run command to Windows
+Task Scheduler (or a cron environment) only after you are happy with manual
+runs.
