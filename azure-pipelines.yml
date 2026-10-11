@@ -1,0 +1,39 @@
+trigger: none
+pr: none
+
+schedules:
+  - cron: "0 6 * * 1"
+    displayName: Weekly Premier League fixture refresh
+    branches:
+      include:
+        - main
+    always: true
+
+pool:
+  name: Default
+  demands:
+    - Agent.OS -equals Windows_NT
+
+steps:
+  - checkout: self
+    clean: false
+
+  - task: PowerShell@2
+    displayName: Run 2026 Premier League fixture ingestion
+    inputs:
+      targetType: inline
+      script: |
+        $ErrorActionPreference = "Stop"
+
+        python -m pip install -r requirements.txt
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+        python -m ipykernel install --user --name python3 --display-name "Python 3"
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+        python scripts\run_notebook.py --config config\jobs\fixtures\premier_league_fixtures.yml
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    env:
+      API_FOOTBALL_KEY: $(API_FOOTBALL_KEY)
+      FIXTURE_SEASONS: "2026"
+      BRONZE_DATA_ROOT: C:\Users\Sam\football_statistics\data\bronze

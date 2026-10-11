@@ -1,0 +1,2 @@
+data/bronze/fixtures/**/*.json
+data/bronze/fixtures/**/.tmp-*

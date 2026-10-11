@@ -1,0 +1,3 @@
+notebook: notebooks/ingestion/fixtures/2026/premier_league_fixtures.ipynb
+kernel_name: python3
+timeout_seconds: 600
